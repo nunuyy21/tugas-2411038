@@ -1,86 +1,89 @@
-//=================================================
-// Class Car
 // =================================================
-
-class Car {
-  constructor(vin, price, brand, model, type, fuel, color) {
-    this.vin   = vin;
-    this.price = price;
-    this.brand = brand;
-    this.model = model;
-    this.type  = type;
-    this.fuel  = fuel;
-    this.color = color;
+// Class Guitar 
+// =================================================
+class Guitar {
+  constructor(serialNumber, price, builder, model, type, backWood, topWood) {
+    this.serialNumber = serialNumber;
+    this.price        = price;
+    this.builder      = builder;
+    this.model        = model;
+    this.type         = type;
+    this.backWood     = backWood;
+    this.topWood      = topWood;
   }
 
-  getVin   = () => this.vin;
-  getPrice = () => this.price;
-  setPrice = (newPrice) => this.price = newPrice;
-
-  getBrand = () => this.brand;
-  getModel = () => this.model;
-  getType  = () => this.type;
-  getFuel  = () => this.fuel;
-  getColor = () => this.color;
+  getSerialNumber = () => this.serialNumber;
+  getPrice        = () => this.price;
+  setPrice        = (newPrice) => this.price = newPrice;
+  getBuilder      = () => this.builder;
+  getModel        = () => this.model;
+  getType         = () => this.type;
+  getBackWood     = () => this.backWood;
+  getTopWood      = () => this.topWood;
 }
 
 
 
 // =================================================
-// Class CarInventory
+// Class Inventory
 // =================================================
-
-class CarInventory {
+class Inventory {
   constructor() {
-    this.cars = [];
+    this.guitars = [];
   }
 
-  addCar = (vin, price, brand, model, type, fuel, color) => {
-    this.cars.push(new Car(vin, price, brand, model, type, fuel, color));
+  addGuitar = (sn, price, builder, model, type, back, top) => {
+    this.guitars.push(new Guitar(sn, price, builder, model, type, back, top));
   };
 
-  getCar = (vin) =>
-    this.cars.find(c => c.getVin() === vin) || null;
+  getGuitar = (sn) =>
+    this.guitars.find(g => g.getSerialNumber() === sn) || null;
 
-  // Cari satu mobil (pertama cocok)
+  // Cari satu hasil (pertama cocok)
   searchOne = (spec) =>
-    this.cars.find(c =>
-      (!spec.getBrand() || spec.getBrand() === c.getBrand()) &&
-      (!spec.getModel() || spec.getModel().toLowerCase() === c.getModel().toLowerCase()) &&
-      (!spec.getType()  || spec.getType() === c.getType()) &&
-      (!spec.getFuel()  || spec.getFuel() === c.getFuel()) &&
-      (!spec.getColor() || spec.getColor() === c.getColor())
+    this.guitars.find(g =>
+      (!spec.getBuilder()  || spec.getBuilder()  === g.getBuilder()) &&
+      (!spec.getModel()    || spec.getModel().toLowerCase() === g.getModel().toLowerCase()) &&
+      (!spec.getType()     || spec.getType()     === g.getType()) &&
+      (!spec.getBackWood() || spec.getBackWood() === g.getBackWood()) &&
+      (!spec.getTopWood()  || spec.getTopWood()  === g.getTopWood())
     ) || null;
 
-  // Cari semua mobil yang cocok
+  // Cari semua hasil (multiple match)
   searchMany = (spec) =>
-    this.cars.filter(c =>
-      (!spec.getBrand() || spec.getBrand() === c.getBrand()) &&
-      (!spec.getModel() || spec.getModel().toLowerCase() === c.getModel().toLowerCase()) &&
-      (!spec.getType()  || spec.getType() === c.getType()) &&
-      (!spec.getFuel()  || spec.getFuel() === c.getFuel()) &&
-      (!spec.getColor() || spec.getColor() === c.getColor())
+    this.guitars.filter(g =>
+      (!spec.getBuilder()  || spec.getBuilder()  === g.getBuilder()) &&
+      (!spec.getModel()    || spec.getModel().toLowerCase() === g.getModel().toLowerCase()) &&
+      (!spec.getType()     || spec.getType()     === g.getType()) &&
+      (!spec.getBackWood() || spec.getBackWood() === g.getBackWood()) &&
+      (!spec.getTopWood()  || spec.getTopWood()  === g.getTopWood())
     );
 }
 
 
 
 // =================================================
-// Data Mobil
+// Data Gitar
 // =================================================
+const inventory = new Inventory();
 
-const carInventory = new CarInventory();
+// Fender Electric - tipe Strat
+inventory.addGuitar("F001", 1500, "Fender", "Stratocaster", "Electric", "Alder", "Maple");
 
-// Toyota
-carInventory.addCar("VIN001", 300000000, "Toyota", "Avanza", "MPV", "Bensin", "Hitam");
-carInventory.addCar("VIN002", 350000000, "Toyota", "Rush", "SUV", "Bensin", "Putih");
+// Gibson Electric - tipe SG
+inventory.addGuitar("G002", 2200, "Gibson", "SG Standard", "Electric", "Mahogany", "Rosewood");
 
-// Honda
-carInventory.addCar("VIN003", 400000000, "Honda", "Civic", "Sedan", "Bensin", "Merah");
-carInventory.addCar("VIN004", 450000000, "Honda", "CR-V", "SUV", "Hybrid", "Abu-abu");
+// Ibanez Electric - tipe Metal
+inventory.addGuitar("I003", 1800, "Ibanez", "RG550", "Electric", "Basswood", "Maple");
 
-// Tesla
-carInventory.addCar("VIN005", 900000000, "Tesla", "Model 3", "Sedan", "Electric", "Putih");
+// Yamaha Acoustic - Natural Sound
+inventory.addGuitar("Y004", 900, "Yamaha", "FG830", "Acoustic", "Rosewood", "Spruce");
+
+// Taylor Acoustic - High Spec
+inventory.addGuitar("T005", 2500, "Taylor", "214CE", "Acoustic", "Mahogany", "Spruce");
+
+// Cort Acoustic - Mid Range
+inventory.addGuitar("C006", 1200, "Cort", "AD810", "Acoustic", "Mahogany", "Spruce");
 
 
 
@@ -88,17 +91,17 @@ carInventory.addCar("VIN005", 900000000, "Tesla", "Model 3", "Sedan", "Electric"
 // Contoh Pencarian
 // =================================================
 
-// Cari mobil SUV
-const findSUV = new Car(null, null, null, null, "SUV", null, null);
-console.log("\n🚙 Semua mobil SUV:");
-console.log(carInventory.searchMany(findSUV));
+// Cari gitar elektrik merk Gibson
+const findGibson = new Guitar(null, null, "Gibson", null, "Electric", null, null);
+console.log("\n🔍 Hasil pencarian Gibson Electric:");
+console.log(inventory.searchOne(findGibson));
 
-// Cari mobil merk Honda
-const findHonda = new Car(null, null, "Honda", null, null, null, null);
-console.log("\n🔍 Mobil Honda ditemukan:");
-console.log(carInventory.searchMany(findHonda));
+// Cari semua gitar akustik
+const findAcoustic = new Guitar(null, null, null, null, "Acoustic", null, null);
+console.log("\n🎸 Semua gitar Acoustic:");
+console.log(inventory.searchMany(findAcoustic));
 
-// Cari Tesla Model 3
-const findTesla = new Car(null, null, "Tesla", "Model 3", null, null, null);
-console.log("\n⚡ Tesla Model 3:");
-console.log(carInventory.searchOne(findTesla));
+// Cari gitar dengan model tertentu (Ibanez RG550)
+const findIbanez = new Guitar(null, null, "Ibanez", "RG550", null, null, null);
+console.log("\n⚙️ Ibanez RG550 ditemukan:");
+console.log(inventory.searchOne(findIbanez));
